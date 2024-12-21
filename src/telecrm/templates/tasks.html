@@ -20,7 +20,17 @@
 <!--            <td>{{ task.assigned_to.username }}</td>-->
             <td>{{ task.due_date }}</td>
             <td>{{ task.file }}</td>
-            <td></td>
+            <td>
+                {% if task.status == 'pending' %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit" name="status" value="completed" class="btn btn-success">Complete</button>
+                    </form>
+                {% else %}
+                    <span class="text-success">Completed</span>
+                {% endif %}
+            </td>
         </tr>
         {% empty %}
         <tr>

@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import TaskAssignForm
 from django.contrib import messages
 from .models import TaskAssign
@@ -10,6 +10,17 @@ from django.core.paginator import Paginator
 def taskList(request):
     if request.user.role == 'team_leader' or request.user.role == 'staff':
         tasks = TaskAssign.objects.filter(assigned_to=request.user)
+        if request.method == 'POST':
+            task_id = request.POST.get('task_id')
+            new_status = request.POST.get('status')
+            task = get_object_or_404(TaskAssign, id=task_id)
+            # Check if the task is assigned to the current user (staff or team leader)
+            if task.assigned_to == request.user:
+                task.status = new_status
+                task.save()
+                messages.success(request, f'Task status updated to {new_status.capitalize()}')
+            else:
+                messages.error(request, 'You cannot update this task status.')
     else:
         tasks = TaskAssign.objects.none()
 

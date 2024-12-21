@@ -12,6 +12,7 @@
                     <th>Assigned To</th>
                     <th>Due Date</th>
                     <th>Role</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,6 +22,7 @@
                         <td>{{ task.assigned_to.username }}</td>
                         <td>{{ task.due_date }}</td>
                         <td>{{ task.assigned_to.role }}</td>
+                        <td>{{task.status}}</td>
                     </tr>
                 {% endfor %}
             </tbody>
