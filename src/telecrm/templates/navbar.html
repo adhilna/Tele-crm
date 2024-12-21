@@ -1,0 +1,53 @@
+
+<!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      {% csrf_token %}
+    <div class="container-fluid">
+      <!-- Brand -->
+      <a class="navbar-brand" href="#">Hi {{request.user}}</a>
+
+      <!-- Toggler for Mobile View -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar Links -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'users:dashboard'  %}">Dashboard</a>
+          </li>
+
+          {% if request.user.role == 'admin'  %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'crm:task_assign' %}">Assign Task</a>
+  </li>
+{% endif %}
+          {% if request.user.role == 'staff' or request.user.role == 'team_leader' %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'crm:task_list' %}">Tasks</a>
+          </li>
+          {% endif %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              More
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#"><p>{{ request.user.role }}</p></a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </li>
+        </ul>
+
+        <!-- Search Form -->
+        <form method="POST" action="{% url 'users:logout' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Log Out</button>
+    </form>
+      </div>
+    </div>
+  </nav>
+
+

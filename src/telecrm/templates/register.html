@@ -1,0 +1,55 @@
+<!-- users/templates/users/register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h2>Register</h2>
+
+    <form method="POST" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <div class="input_field">
+                    <i class="fa-solid fa-user"></i>
+                {{form.username}}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <div class="input_field">
+                    <i class="fa-solid fa-envelope"></i>
+                    {{form.email}}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="role" class="form-label">Role</label>
+                <div class="input_field">
+                    <i class="fa-solid fa-key"></i>
+                    {{form.role}}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <div class="input_field">
+                    <i class="fa-solid fa-key"></i>
+                    {{form.password1}}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="confirm-password" class="form-label">Confirm Password</label>
+                <div class="input_field">
+                    <i class="fa-solid fa-key"></i>
+                    {{form.password2}}
+                </div>
+            </div>
+            <input type="submit" class="btn btn-primary w-100 login-btn" value="Register">
+        </form>
+
+    <p>Already have an account? <a href="{% url 'users:login' %}">Login here</a></p>
+
+</body>
+</html>

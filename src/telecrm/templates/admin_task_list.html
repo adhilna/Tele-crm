@@ -1,0 +1,34 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+    <h2>All Assigned Tasks</h2>
+
+    {% if tasks %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Assigned To</th>
+                    <th>Due Date</th>
+                    <th>Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.task_name }}</td>
+                        <td>{{ task.assigned_to.username }}</td>
+                        <td>{{ task.due_date }}</td>
+                        <td>{{ task.assigned_to.role }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No tasks assigned.</p>
+    {% endif %}
+
+
+
+{% endblock %}

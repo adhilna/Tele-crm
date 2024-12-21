@@ -1,0 +1,44 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Task Name</th>
+            <th>Description</th>
+<!--            <th>Assigned To</th>-->
+            <th>Due Date</th>
+            <th>File</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.task_name }}</td>
+            <td>{{ task.description }}</td>
+<!--            <td>{{ task.assigned_to.username }}</td>-->
+            <td>{{ task.due_date }}</td>
+            <td>{{ task.file }}</td>
+            <td></td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No tasks assigned to you.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Pagination Links -->
+<div>
+    {% if tasks.has_previous %}
+    <a href="?page={{ tasks.previous_page_number }}">Previous</a>
+    {% endif %}
+    <span>Page {{ tasks.number }} of {{ tasks.paginator.num_pages }}</span>
+    {% if tasks.has_next %}
+    <a href="?page={{ tasks.next_page_number }}">Next</a>
+    {% endif %}
+</div>
+
+{% endblock %}
