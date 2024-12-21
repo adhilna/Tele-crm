@@ -19,7 +19,14 @@
             <td>{{ task.description }}</td>
 <!--            <td>{{ task.assigned_to.username }}</td>-->
             <td>{{ task.due_date }}</td>
-            <td>{{ task.file }}</td>
+            <td>
+                {% if task.file %}
+                    <!-- If a file is assigned, provide a download link -->
+                    <a href="{{ task.file.url }}" target="_blank">{{ task.file.name }}</a>
+                {% else %}
+                    No file attached
+                {% endif %}
+            </td>
             <td>
                 {% if task.status == 'pending' %}
                     <form method="POST">
