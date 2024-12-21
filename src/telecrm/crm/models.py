@@ -22,3 +22,33 @@ class TaskAssign(models.Model):
 
     def __str__(self):
         return self.task_name
+
+
+class CallLog(models.Model):
+    CALL_TYPE_CHOICES = [
+        ('incoming', 'Incoming'),
+        ('outgoing', 'Outgoing'),
+    ]
+    CALL_OUTCOME_CHOICES = [
+        ('rejected', 'Rejected'),
+        ('missed', 'Missed'),
+        ('completed', 'Completed'),
+    ]
+    name = models.CharField(max_length=128)
+    place = models.CharField(max_length=128)
+    phone_number = models.CharField(max_length=15)
+    call_type = models.CharField(max_length=10, choices=CALL_TYPE_CHOICES)
+    call_outcome = models.CharField(max_length=10, choices=CALL_OUTCOME_CHOICES)
+    call_date = models.DateTimeField()
+    call_duration = models.DurationField()
+    notes = models.TextField(blank=True, null=True)
+    logged_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='logged_calls',
+        default=True
+    )
+
+
+    def __str__(self):
+        return f'called on {self.call_date} to {self.name}'

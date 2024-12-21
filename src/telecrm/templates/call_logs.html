@@ -1,2 +1,36 @@
-<h1>call logs</h1>
+{% extends 'main.html' %}
+{% block content %}
 
+<h1>Call Logs</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Place</th>
+            <th>Phone Number</th>
+            <th>Call Type</th>
+            <th>Outcome</th>
+            <th>Date</th>
+            <th>Duration</th>
+            <th>Logged By</th>
+            <th>Notes</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in call_logs %}
+        <tr>
+            <td>{{ log.name }}</td>
+            <td>{{ log.place }}</td>
+            <td>{{ log.phone_number }}</td>
+            <td>{{ log.get_call_type_display }}</td>
+            <td>{{ log.get_call_outcome_display }}</td>
+            <td>{{ log.call_date }}</td>
+            <td>{{ log.call_duration }}</td>
+            <td>{{ log.logged_by.username }}</td>
+            <td>{{ log.notes }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

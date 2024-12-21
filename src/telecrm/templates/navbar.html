@@ -25,11 +25,20 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'crm:admin_task_list' %}">Task Bar</a>
             </li>
+             <li class="nav-item">
+            <a class="nav-link" href="{% url 'crm:call_logs' %}">Call Logs</a>
+          </li>
 
 {% endif %}
           {% if request.user.role == 'staff' or request.user.role == 'team_leader' %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'crm:task_list' %}">Tasks</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'crm:add_call_log' %}">Add Call</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'crm:call_logs' %}">Call Logs</a>
           </li>
           {% endif %}
           <li class="nav-item dropdown">

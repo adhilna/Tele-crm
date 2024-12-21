@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import TaskAssignForm
+from .forms import TaskAssignForm, CallLogForm
 from django.contrib import messages
-from .models import TaskAssign
+from .models import TaskAssign, CallLog
 from django.core.paginator import Paginator
 
 # Create your views here.
@@ -56,12 +56,29 @@ def adminTaskList(request):
 
 
 def callLogs(request):
-    context = {}
+    if request.user.role == 'admin':
+        call_logs = CallLog.objects.all()
+    else:
+        call_logs = CallLog.objects.filter(logged_by=request.user)
+    context = {'call_logs': call_logs}
     return render(request, 'call_logs.html', context)
 
 
 def add_call_log(request):
-    context = {}
+    if request.method == 'POST':
+        form = CallLogForm(request.POST)
+        if form.is_valid():
+            call_log = form.save(commit=False)
+            call_log.logged_by = request.user  # Assign the logged-in user here
+            call_log.save()
+            messages.success(request, 'Call logged successfully')
+            return redirect('crm:call_logs')
+        else:
+            print(form.errors)
+            messages.error(request, 'Failed to log call')
+    else:
+        form = CallLogForm()
+    context = {'form': form}
     return render(request, 'add_call_log.html', context)
 
 
