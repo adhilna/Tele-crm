@@ -11,6 +11,13 @@ class User(AbstractUser):
         ('staff', 'Staff'),
     ]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='staff')
+    team_leader = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='team_members'
+    )
 
     def __str__(self):
         return self.username

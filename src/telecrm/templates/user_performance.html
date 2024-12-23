@@ -1,0 +1,9 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<p>Total tasks assigned: {{ total_tasks }}</p>
+<p>Completed tasks: {{ completed_tasks }}</p>
+<p>Completion rate: {{ completion_rate|floatformat:2 }}%</p>
+
+
+{% endblock %}

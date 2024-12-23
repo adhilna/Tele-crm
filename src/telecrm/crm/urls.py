@@ -9,6 +9,9 @@ urlpatterns = [
     path('call_logs/', views.callLogs, name='call_logs'),
     path('add_call_log/', views.add_call_log, name='add_call_log'),
     path('admin_task_list/', views.adminTaskList, name='admin_task_list'),
+    path('user_performance/', views.userPerformance, name='user_performance'),
+    path('call_performance/', views.userCallPerformance, name='call_performance'),
+
     # path('reminders/', views.reminders, name='reminders'),
     # path('add_reminder/', views.addReminder, name='add_reminder'),
 ]

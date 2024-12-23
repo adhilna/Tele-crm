@@ -82,6 +82,35 @@ def add_call_log(request):
     return render(request, 'add_call_log.html', context)
 
 
+def userPerformance(request):
+    tasks = TaskAssign.objects.filter(assigned_to=request.user)
+    total_tasks = tasks.count()
+    completed_tasks = tasks.filter(status='completed').count()
+    completion_rate = (completed_tasks/total_tasks)*100 if total_tasks else 0
+
+    context = {'total_tasks': total_tasks, 'completed_tasks': completed_tasks, 'completion_rate': completion_rate}
+    return render(request, 'user_performance.html', context)
+
+
+def userCallPerformance(request):
+    calls = CallLog.objects.filter(logged_by=request.user)
+    total_calls = calls.count()
+    completed_calls = calls.filter(call_outcome='completed').count()
+    missed_calls = calls.filter(call_outcome='missed').count()
+    rejected_calls = calls.filter(call_outcome='rejected').count()
+
+    context = {'total_calls': total_calls,
+               'completed_calls': completed_calls,
+               'missed_calls': missed_calls,
+               'rejected_calls': rejected_calls
+    }
+    return render(request, 'call_performance.html', context)
+
+
+# def adminDashboard(request):
+
+
+
 def reminders(request):
     context = {}
     return render(request, 'reminders.html', context)

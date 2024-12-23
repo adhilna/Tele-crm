@@ -2,6 +2,170 @@
 
 {% block content %}
 
-<h1>dashboard</h1>
+  <h1>Dashboard</h1>
+<div class="dashboard-summary">
+    <h3>Task Summary</h3>
+    <p>Total Tasks: {{ total_tasks }}</p>
+    <p>Completed Tasks: {{ completed_tasks }}</p>
+    <p>Completion Rate: {{ completion_rate }}%</p>
+</div>
+
+{% if request.user.role == 'admin' %}
+<div class="admin-overview">
+    <h3>All Tasks</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Task Name</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.task_name }}</td>
+                <td>{{ task.get_status_display }}</td>
+                <td>{{ task.assigned_to.username }}</td>
+                <td>{{ task.due_date }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Call Logs</h2>
+{% if call_logs %}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Call Type</th>
+            <th>Outcome</th>
+            <th>Date</th>
+            <th>Call made by</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in call_logs %}
+        <tr>
+            <td>{{ log.name }}</td>
+            <td>{{ log.phone_number }}</td>
+            <td>{{ log.get_call_type_display }}</td>
+            <td>{{ log.get_call_outcome_display }}</td>
+            <td>{{ log.call_date }}</td>
+            <td>{{ log.logged_by.username }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No call logs found for your team.</p>
+{% endif %}
+</div>
+{% elif request.user.role == 'team_leader' %}
+{% if tasks %}
+    <p>Number of tasks: {{ tasks.count }}</p>
+{% else %}
+    <p>No tasks found for your team.</p>
+{% endif %}
+
+<div class="team-leader-overview">
+    <h3>Team Tasks</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Task Name</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.task_name }}</td>
+                <td>{{ task.get_status_display }}</td>
+                <td>{{ task.assigned_to.username }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<h2>Call Logs</h2>
+{% if call_logs %}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Call Type</th>
+            <th>Outcome</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in call_logs %}
+        <tr>
+            <td>{{ log.name }}</td>
+            <td>{{ log.phone_number }}</td>
+            <td>{{ log.get_call_type_display }}</td>
+            <td>{{ log.get_call_outcome_display }}</td>
+            <td>{{ log.call_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No call logs found for your team.</p>
+{% endif %}
+{% else %}
+<div class="staff-overview">
+    <h3>Your Tasks</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Task Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.task_name }}</td>
+                <td>{{ task.get_status_display }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<h2>Call Logs</h2>
+{% if call_logs %}
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone Number</th>
+            <th>Call Type</th>
+            <th>Outcome</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for log in call_logs %}
+        <tr>
+            <td>{{ log.name }}</td>
+            <td>{{ log.phone_number }}</td>
+            <td>{{ log.get_call_type_display }}</td>
+            <td>{{ log.get_call_outcome_display }}</td>
+            <td>{{ log.call_date }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No call logs found for your team.</p>
+{% endif %}
+{% endif %}
+
 
 {% endblock %}

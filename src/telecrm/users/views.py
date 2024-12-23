@@ -4,6 +4,8 @@ from .forms import RegistrationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from crm.models import TaskAssign, CallLog
+from .models import User
 from django.urls import reverse
 
 # Create your views here.
@@ -55,6 +57,50 @@ def logoutView(request):
 
 @login_required(login_url='login')
 def dashboardView(request):
-    # Add your dashboard logic here
-    context = {}
+    if request.user.role == 'admin':
+        tasks = TaskAssign.objects.all()
+        call_logs = CallLog.objects.all()
+        completed_tasks = tasks.filter(status='completed').count()
+        total_tasks = tasks.count()
+        completion_rate = (completed_tasks / total_tasks) * 100 if total_tasks else 0
+        context = {
+            'tasks': tasks,
+            'call_logs': call_logs,
+            'completion_rate': round(completion_rate, 2),
+            'total_tasks': total_tasks,
+            'completed_tasks': completed_tasks,
+        }
+
+    elif request.user.role == 'team_leader':
+        # Ensure that the team members' tasks are being fetched dynamically
+        tasks = TaskAssign.objects.filter(assigned_to=request.user.id)
+        print("Tasks for team:", tasks)
+        call_logs = CallLog.objects.filter(logged_by=request.user.id)
+        print("Call logs for team:", call_logs)
+        completed_tasks = tasks.filter(status='completed').count()
+        total_tasks = tasks.count()
+        completion_rate = (completed_tasks / total_tasks) * 100 if total_tasks else 0
+        context = {
+            'tasks': tasks,
+            'call_logs': call_logs,
+            'completion_rate': round(completion_rate, 2),
+            'total_tasks': total_tasks,
+            'completed_tasks': completed_tasks,
+        }
+
+    else:
+        tasks = TaskAssign.objects.filter(assigned_to=request.user)
+        call_logs = CallLog.objects.filter(logged_by=request.user)
+        completed_tasks = tasks.filter(status='completed').count()
+        total_tasks = tasks.count()
+        completion_rate = (completed_tasks / total_tasks) * 100 if total_tasks else 0
+        context = {
+            'tasks': tasks,
+            'call_logs': call_logs,
+            'completion_rate': round(completion_rate, 2),
+            'total_tasks': total_tasks,
+            'completed_tasks': completed_tasks,
+        }
+
     return render(request, 'dashboard.html', context)
+

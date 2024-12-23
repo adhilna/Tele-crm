@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.contrib.auth.views import LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', LoginView.as_view(template_name='login.html'), name='login'),  # Root URL as login page
     path('users/', include('users.urls')),  # User-related views
     path('crm/', include('crm.urls')),  # CRM views under the "crm/" path
 ]

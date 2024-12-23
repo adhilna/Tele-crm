@@ -131,3 +131,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 AUTH_USER_MODEL = 'users.User'
+
+
+LOGIN_URL = '/'  # Root URL as login page
+LOGIN_REDIRECT_URL = '/crm/dashboard/'  # Redirect after successful login (change as needed)
+LOGOUT_REDIRECT_URL = '/'  # Redirect to login page after logout
+
